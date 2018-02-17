@@ -20,23 +20,10 @@
                     <dockerHost>unix:///var/run/docker.sock</dockerHost>
                     <images>
                         <image>
-                            <!-- Replace your-project-name -->
                             <name>${project.artifactId}:${project.version}</name>
                             <build>
-                                <!-- This is the same FROM used in a Dockerfile -->
-                                <from>openjdk:8-jdk-alpine</from>
-                                <runCmds>
-                                    <run>apk --no-cache add openssl wget tar bash curl</run>
-                                    <run>wget -q http://packages.confluent.io/archive/4.0/confluent-oss-4.0.0-2.11.tar.gz</run>
-                                    <run>tar -xzf confluent-oss-4.0.0-2.11.tar.gz</run>
-                                    <run>rm confluent-oss-4.0.0-2.11.tar.gz</run>
-                                </runCmds>
-                                <cmd>
-                                    <![CDATA[/confluent-4.0.0/bin/confluent start && tail -F /confluent-4.0.0/log/server.log]]>
-                                </cmd>
-
+                                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
                                 <assembly>
-                                    <!-- This is a predefined assembly.xml that will only copy your final artifact to the Docker image -->
                                     <descriptorRef>artifact</descriptorRef>
                                 </assembly>
                             </build>
